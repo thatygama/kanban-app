@@ -1,5 +1,5 @@
 <template>
-  <el-container class="task-form-container">
+  <el-container v-loading="loadingTask" class="task-form-container">
     <el-header>
       <h1>{{ isEdit ? 'Editar Tarefa' : 'Criar Tarefa' }}</h1>
     </el-header>
@@ -22,15 +22,22 @@
             minimun
           />
         </el-form-item>
-        <el-form-item label="Status">
-          <el-select v-model="task.status_id" placeholder="Selecione o status" style="width: 100%">
-            <el-option
-              v-for="item in statuses"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            />
-          </el-select>
+        <el-form-item label="Status" style="text-align: left;">
+          <el-dropdown @command="changeStatus">
+              <el-button size="mini" :type="getStatusType(task.status_id)">
+                {{ task.status?.name || '' }}
+                <i class="el-icon-arrow-down el-icon--right"></i>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                  v-for="status in statuses"
+                  :key="status.id"
+                  :command="status"
+                >
+                  {{ status.name }}
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitTask">{{ isEdit ? 'Salvar' : 'Criar' }}</el-button>
@@ -44,16 +51,17 @@
 
 <script>
 import requestApi from '@/helpers/request-helper';
-import dayjs from 'dayjs';
 import $functions from '@/utils/functions';
 
 export default {
   data() {
     return {
+      loadingTask: true,
       task: {
         title: '',
         description: '',
         status_id: 1,
+        status: { id: 1, name: 'A fazer' },
         due_date: '',
       },
       isEdit: false,
@@ -72,29 +80,35 @@ export default {
   },
   async mounted() {
     await this.getTask();
+    this.loadingTask = false;
   },
   methods: {
     fetchStatuses() {
       // IF NECESSARY - get Statuses from API
     },
+    changeStatus(status) {
+      this.task.status_id = status.id;
+      this.task.status = { ...status };
+    },
+    getStatusType(status_id) {
+      return $functions.getStatusType(status_id);
+    },
     async getTask() {
-    const id = this.$route.params.id;
-    if (id) {
-      this.isEdit = true;
-      try {
-        const response = await requestApi(`tasks/${id}`, 'GET', true);
-        if (response.status) {
-          if (this.response.result.data.due_date) {
-            this.response.result.data.due_date = dayjs(this.response.result.data.due_date).format('DD/MM/YYYY');
+      const id = this.$route.params.id;
+      if (id) {
+        this.isEdit = true;
+        try {
+          const response = await requestApi(`tasks/${id}`, 'GET', true);
+          if (response.status) {
+            this.task = response.result.data;
+          } else {
+            this.error = response.error;
           }
-          this.task = response.result.data;
-        } else {
-          this.error = response.error;
+        } catch (err) {
+          console.log('Erro: ', err)
+          this.error = 'Erro ao carregar tarefa. Tente novamente.';
         }
-      } catch (err) {
-        this.error = 'Erro ao carregar tarefa. Tente novamente.';
       }
-    }
     },
     returnTasks() {
       this.$router.push('/tarefas');

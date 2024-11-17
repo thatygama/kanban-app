@@ -20,7 +20,7 @@ export default {
         clearInterval(interval);
         this.$router.push('/');
       }
-    }, 5000);
+    }, 1000);
   },
 };
 </script>

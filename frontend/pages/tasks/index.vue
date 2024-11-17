@@ -70,11 +70,13 @@ export default {
     fetchStatuses() {
       // IF NECESSARY - get Statuses from API
     },
+    getStatusType(status_id) {
+      return $functions.getStatusType(status_id);
+    },
     async fetchTasks() {
       this.loadingTasks = true;
       const response = await requestApi('tasks', 'GET', true);
       if (response.status) {
-        console.log(response)
         this.tasks = response.result.data.map((task) => {
           task.description = task.description || '-';
           if (task.due_date) {
@@ -105,18 +107,6 @@ export default {
         }
       } catch (err) {
         this.$message.error('Erro ao atualizar status.');
-      }
-    },
-    getStatusType(statusId) {
-      switch (statusId) {
-        case 1:
-          return 'info';
-        case 2:
-          return 'warning';
-        case 3:
-          return 'success';
-        default:
-          return 'default';
       }
     },
     editTask(id) {

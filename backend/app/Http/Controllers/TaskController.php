@@ -68,7 +68,7 @@ class TaskController extends Controller
         if (!$task) {
             return response()->json(['error' => true, 'message' => 'Tarefa não encontrada'], 404);
         }
-        return response()->json(['message' => 'Tarefa encontrada']);
+        return response()->json(['data' => $task, 'message' => 'Tarefa encontrada']);
     }
 
     public function destroy($id)
