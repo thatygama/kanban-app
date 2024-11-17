@@ -1,10 +1,10 @@
 <template>
   <el-container class="register-container">
     <el-header>
-      <h1>Registrar</h1>
+      <h1>Registre-se no Kanban!</h1>
     </el-header>
     <el-main>
-      <el-form @submit.native.prevent="register" :model="form" label-width="120px">
+      <el-form @submit.native.prevent="register" :model="form" label-width="130px">
         <el-form-item label="Nome">
           <el-input v-model="form.name" placeholder="Digite seu nome" />
         </el-form-item>
@@ -71,6 +71,11 @@ export default {
   max-width: 400px;
   margin: 50px auto;
   text-align: center;
+  max-width: 500px;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 
   h1 {
     font-size: 24px;
@@ -87,7 +92,7 @@ export default {
 }
 
 .login-link {
-  margin-top: 20px;
+  margin-top: 30px;
   font-size: 14px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="task-card" :data-task-id="task.id">
-    <h4>{{ task.title }}</h4>
+    <h3 class="bolder">{{ task.title }}</h3>
     <p>{{ task.description || '-' }}</p>
     <p><strong>Previsão de entrega:</strong> {{ task.due_date || '-' }}</p>
     <div class="card-actions">
@@ -38,6 +38,20 @@ export default {
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
+  }
+
+  @media (max-width: 350px) {
+    .card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      justify-items: center;
+      align-items: center;
+
+      .el-button {
+        margin: 0 0 5px 0;
+      }
+    }
   }
 }
 </style>
