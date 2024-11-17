@@ -2,6 +2,8 @@ import routes from './config/routes'
 
 export default {
   router: {
+    middleware: ['auth'],
+
     extendRoutes(existingRoutes, resolve) {
       existingRoutes.splice(0, existingRoutes.length);
       routes.forEach((route) => {

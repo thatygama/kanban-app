@@ -5,3 +5,5 @@ const apiUrls = {
 };
 
 export const API_URL = apiUrls[process.env.NODE_ENV] || apiUrls.development;
+
+export const publicRoutes = ['/', '/login', '/registrar'];

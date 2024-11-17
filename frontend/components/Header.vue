@@ -2,38 +2,36 @@
   <el-header class="header">
     <div class="header-content">
       <h2>Kanban!</h2>
+      <h4>Bem-vindo(a){{ (user || {}).name ? `, ${user.name}` : '' }}!</h4>
       <el-button type="danger" :disabled="loading" :loading="loading" @click="logout">Logout</el-button>
     </div>
   </el-header>
 </template>
 
 <script>
-import requestApi from '@/helpers/request-helper';
-
 export default {
   data() {
     return {
-      loading: false
+      loading: false,
     };
+  },
+  computed: {
+    user() {
+      return this.$store.state.auth.user;
+    },
   },
   methods: {
     async logout() {
+      this.loading = true;
       try {
-        this.loading = true;
-        const response = await requestApi('logout', 'POST', true);
-
-        if (response.status) {
-          localStorage.removeItem('authorization_user');
-          this.$router.push('/');
-        } else {
-          this.error = response.error;
-        }
-      } catch (err) {
-        this.error = 'Erro ao tentar deslogar. Tente novamente.';
+        await this.$store.dispatch('auth/logout');
+        this.$router.push('/');
+      } catch (error) {
+        console.error('Erro ao deslogar:', error.message);
       } finally {
         this.loading = false;
       }
-    }
+    },
   },
 };
 </script>

@@ -7,6 +7,7 @@
 
 <script>
 import Header from '@/components/Header.vue';
+import { publicRoutes } from '@/config';
 
 export default {
   components: {
@@ -14,7 +15,7 @@ export default {
   },
   computed: {
     showHeader() {
-      return this.$route.meta.middleware === 'auth';
+      return !publicRoutes.some(el => el === this.$route.path);
     },
   },
 };

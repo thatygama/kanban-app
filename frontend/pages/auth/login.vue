@@ -24,8 +24,6 @@
 </template>
 
 <script>
-import requestApi from '@/helpers/request-helper';
-
 export default {
   data() {
     return {
@@ -39,17 +37,22 @@ export default {
   },
   methods: {
     async login() {
-      try {
-        const response = await requestApi('login', 'POST', false, this.form);
+      this.logging = true;
+      this.error = null;
 
-        if (response.status) {
-          localStorage.setItem('authorization_user', response.result.token);
+      try {
+        const response = await this.$store.dispatch('auth/login', this.form);
+
+        if (response.success) {
           this.$router.push('/tarefas');
         } else {
-          this.error = response.error;
+          this.error = response.message;
         }
       } catch (err) {
+        console.log('Erro: ', err);
         this.error = 'Erro ao tentar logar. Tente novamente.';
+      } finally {
+        this.logging = false;
       }
     },
     goToRegister() {

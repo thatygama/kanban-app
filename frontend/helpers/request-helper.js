@@ -26,6 +26,7 @@ async function requestApi(route, method = 'GET', token = false, body = false) {
     }
 
     localStorage.removeItem('authorization_user');
+    localStorage.removeItem('user_data');
     return { status: false, error: 'Falha ao autenticar' };
   } catch (error) {
     console.log('Erro: ', error)

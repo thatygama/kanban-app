@@ -57,7 +57,10 @@ class AuthController extends Controller
             'expires_at' => Carbon::now()->addHours(10),
         ]);
 
-        return response()->json(compact('token'));
+        return response()->json([ 'data' => [
+            'user' => $user,
+            ...compact('token')
+        ], 'message' => 'Usuário logado com sucesso!' ]);
     }
 
     public function logout()

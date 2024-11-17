@@ -5,120 +5,120 @@
       <el-button type="primary" :disabled="loadingTasks" @click="createTask">+ Nova tarefa</el-button>
     </el-header>
     <el-main>
-      <el-table :data="tasks" :loading="loadingTasks" style="width: 100%"
-        :empty-text="loadingTasks
-          ? 'Carregando...'
-          : 'Não há tarefas adicionadas'"
-      >
-        <el-table-column prop="title" label="Título" width="180" />
-        <el-table-column label="Status" width="180">
-          <template #default="scope">
-            <el-dropdown @command="updateStatus(scope.row, $event)">
-              <el-button size="mini" :type="getStatusType(scope.row.status_id)">
-                {{ scope.row.status.name }}
-                <!-- <i class="el-icon-arrow-down el-icon--right"></i> -->
-              </el-button>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item
-                  v-for="status in statuses"
-                  :key="status.id"
-                  :command="status.id"
-                >
-                  {{ status.name }}
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </template>
-        </el-table-column>
-        <el-table-column prop="description" label="Descrição" />
-        <el-table-column prop="due_date" label="Previsão de entrega" />
-        <el-table-column label="Ações" width="170">
-          <template #default="scope">
-            <el-button type="primary" size="mini" class="btn-action" @click="editTask(scope.row.id)">
-              Editar
-            </el-button>
-            <el-button type="danger" size="mini" class="btn-action" @click="deleteTask(scope.row.id)">
-              Excluir
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <el-row :gutter="20">
+        <el-col :span="8" v-for="status in statuses" :key="status.id">
+          <StatusColumn
+            :status="status"
+            :tasks="tasksByStatus[status.id]"
+            @task-selected="onSelectTask"
+            @task-dropped="onDropTask"
+            @delete-task="deleteTask"
+            @edit-task="editTask"
+          />
+        </el-col>
+      </el-row>
     </el-main>
   </el-container>
 </template>
 
 <script>
+import StatusColumn from '@/components/tasks/StatusColumn.vue';
 import requestApi from '@/helpers/request-helper';
 import $functions from '@/utils/functions';
 
 export default {
+  components: {
+    StatusColumn,
+  },
   data() {
     return {
       tasks: [],
+      tasksByStatus: {},
+      taskIdSelected: null,
       statuses: [
-        { id: 1, name: 'A fazer' },
-        { id: 2, name: 'Em andamento' },
-        { id: 3, name: 'Finalizada' }
+        { id: 1, name: "A fazer" },
+        { id: 2, name: "Em andamento" },
+        { id: 3, name: "Finalizada" },
       ],
-      loadingTasks: false
+      loadingTasks: false,
     };
   },
-  mounted() {
-    this.fetchTasks();
+  async mounted() {
+    await this.fetchTasks();
   },
   methods: {
-    fetchStatuses() {
-      // IF NECESSARY - get Statuses from API
-    },
-    getStatusType(status_id) {
-      return $functions.getStatusType(status_id);
-    },
     async fetchTasks() {
       this.loadingTasks = true;
-      const response = await requestApi('tasks', 'GET', true);
-      if (response.status) {
-        this.tasks = response.result.data.map((task) => {
-          task.description = task.description || '-';
-          if (task.due_date) {
-            task.due_date = $functions.formatDateToDisplay(task.due_date);
-          }
-          return task;
-        });
-      } else {
-        this.$message.error('Erro ao carregar tarefas: ' + response.error);
+      try {
+        const response = await requestApi('tasks', 'GET', true);
+        if (response.status) {
+          this.tasks = response.result.data.map((task) => ({
+            ...task,
+            description: task.description || '-',
+            due_date: task.due_date ? $functions.formatDateToDisplay(task.due_date) : '-',
+          }));
+          this.groupTasksByStatus();
+        } else {
+          this.$message.error('Erro ao carregar tarefas.');
+        }
+      } catch (err) {
+        console.error(err);
+        this.$message.error('Erro ao carregar tarefas.');
       }
       this.loadingTasks = false;
     },
+    groupTasksByStatus() {
+      this.tasksByStatus = this.statuses.reduce((acc, status) => {
+        acc[status.id] = this.tasks.filter((task) => task.status_id === status.id);
+        return acc;
+      }, {});
+    },
+    onSelectTask(taskId) {
+      this.taskIdSelected = taskId;
+    },
+    async onDropTask(newStatusId) {
+      const taskElem = this.tasks.findIndex((t) => t.id == this.taskIdSelected);
+
+      if (this.tasks[taskElem].status_id != newStatusId) {
+        try {
+          const response = await requestApi(`tasks/${this.tasks[taskElem].id}`, 'PUT', true, {
+            status_id: newStatusId,
+          });
+
+          if (response.status) {
+            this.tasks[taskElem].status_id = newStatusId;
+            this.tasks[taskElem].status = this.statuses.find(el => el.id === newStatusId);
+            this.groupTasksByStatus();
+            this.$message.success('Status atualizado com sucesso!');
+          } else {
+            this.$message.error('Erro ao atualizar status: ' + response.error);
+          }
+        } catch (err) {
+          console.error(err);
+          this.$message.error('Erro ao atualizar status.');
+        } finally {
+          this.taskIdSelected = null;
+        }
+      }
+    },
     createTask() {
       this.$router.push('/tarefas/tarefa');
-    },
-    async updateStatus(task, statusId) {
-      try {
-        const response = await requestApi(`tasks/${task.id}`, 'PUT', true, {
-          status_id: statusId,
-        });
-        if (response.status) {
-          const newStatus = this.statuses.find((status) => status.id === statusId);
-          this.$message.success(`Status atualizado para: ${newStatus.name}`);
-          task.status_id = newStatus.id;
-          task.status.name = newStatus.name;
-        } else {
-          this.$message.error('Erro ao atualizar status: ' + response.error);
-        }
-      } catch (err) {
-        this.$message.error('Erro ao atualizar status.');
-      }
     },
     editTask(id) {
       this.$router.push(`/tarefas/tarefa/${id}`);
     },
     async deleteTask(id) {
-      const response = await requestApi(`tasks/${id}`, 'DELETE', true);
-      if (response.status) {
-        this.$message.success('Tarefa excluída!');
-        await this.fetchTasks();
-      } else {
-        this.$message.error('Erro ao excluir tarefa: ' + response.error);
+      try {
+        const response = await requestApi(`tasks/${id}`, 'DELETE', true);
+        if (response.status) {
+          this.$message.success('Tarefa excluída!');
+          await this.fetchTasks();
+        } else {
+          this.$message.error('Erro ao excluir tarefa.');
+        }
+      } catch (err) {
+        console.error(err);
+        this.$message.error('Erro ao excluir tarefa.');
       }
     },
   },
@@ -137,7 +137,7 @@ export default {
     margin-bottom: 20px;
   }
 
-  .el-table {
+  .el-row {
     margin-top: 20px;
   }
 }
