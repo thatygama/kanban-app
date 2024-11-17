@@ -1,0 +1,31 @@
+# version: '3.8'
+# services:
+#   frontend:
+#     build:
+#       context: ./
+#       dockerfile: Dockerfile
+#     container_name: vue-frontend
+#     ports:
+#       - "3000:3000"
+#     environment:
+#       - HOST=0.0.0.0
+#       - PORT=3000
+#     volumes:
+#       - /app/node_modules
+
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_ENV: ${NODE_ENV:-development}
+    container_name: vue-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+    volumes:
+      - .:/app
+      - /app/node_modules

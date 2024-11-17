@@ -1,0 +1,16 @@
+# Ignore node_modules
+frontend/node_modules/
+backend/vendor/
+backend/storage/
+backend/.env
+
+# Ignore Docker volumes
+mysql-data/
+
+# Ignore IDE/editor configs
+.idea/
+.vscode/
+
+# Ignore system files
+.DS_Store
+thumbs.db
