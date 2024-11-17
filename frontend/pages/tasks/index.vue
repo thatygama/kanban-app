@@ -1,7 +1,7 @@
 <template>
   <el-container class="tasks-container">
     <el-header>
-      <h1>Minhas Tarefas</h1>
+      <h1 class="bolder">Minhas Tarefas</h1>
       <el-button type="primary" :disabled="loadingTasks" @click="createTask">+ Nova tarefa</el-button>
     </el-header>
     <el-main>
@@ -127,6 +127,7 @@ export default {
 
 <style lang="scss" scoped>
 .tasks-container {
+  min-width: 250px;
   padding: 0 20px;
   margin: 50px auto;
 
@@ -137,8 +138,36 @@ export default {
     margin-bottom: 20px;
   }
 
+  @media (max-width: 350px) {
+    .el-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      h1 {
+        min-width: 160px;
+      }
+    }
+  }
+
   .el-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
     margin-top: 20px;
+
+    @media (max-width: 700px) {
+      justify-content: center;
+    }
+  }
+
+  .el-col {
+    flex: 1 1 300px;
+    max-width: 100%;
+
+    @media (max-width: 700px) {
+      flex: 1 1 100%;
+    }
   }
 }
 </style>

@@ -1,10 +1,11 @@
 <template>
   <el-container class="login-container">
     <el-header>
-      <h1>Login</h1>
+      <h1>Kanban!</h1>
+      <h4>Suas tarefas organizadas</h4>
     </el-header>
-    <el-main>
-      <el-form @submit.native.prevent="login" :model="form" label-width="120px">
+    <el-main class="mt-5">
+      <el-form @submit.native.prevent="login" :model="form" label-width="60px">
         <el-form-item label="Email">
           <el-input v-model="form.email" type="email" placeholder="Digite seu email" />
         </el-form-item>
@@ -17,7 +18,7 @@
       </el-form>
       <el-alert v-if="error" type="error" :closable="false">{{ error }}</el-alert>
       <p class="register-link">
-        Não possui uma conta? <el-button type="text" :disabled="logging" @click="goToRegister">Registre-se aqui</el-button>
+        Ainda não possui uma conta? <el-button type="text" :disabled="logging" @click="goToRegister">Registre-se aqui</el-button>
       </p>
     </el-main>
   </el-container>
@@ -64,13 +65,24 @@ export default {
 
 <style lang="scss" scoped>
 .login-container {
-  max-width: 400px;
   margin: 50px auto;
   text-align: center;
+  max-width: 500px;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
 
-  h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
+  .el-header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+
+    h4 {
+      margin-top: -12px;
+      color: #2890f8;
+    }
   }
 }
 
@@ -83,7 +95,7 @@ export default {
 }
 
 .register-link {
-  margin-top: 20px;
+  margin-top: 30px;
   font-size: 14px;
 }
 </style>

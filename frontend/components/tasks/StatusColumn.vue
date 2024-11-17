@@ -12,20 +12,25 @@
       {{ status.name }}
     </h3>
     <div class="task-list">
-      <div
-        v-for="task in tasks"
-        :key="task.id"
-        :class="`task-${task.id}`"
-        :data-id="task.id"
-        draggable="true"
-        @dragstart="onDragStart"
-      >
-        <TaskCard
-          :task="task"
-          @delete-task="deleteTask"
-          @edit-task="editTask"
-        />
-      </div>
+      <span v-if="tasks.length">
+        <div
+          v-for="task in tasks"
+          :key="task.id"
+          :class="`task-${task.id}`"
+          :data-id="task.id"
+          draggable="true"
+          @dragstart="onDragStart"
+        >
+          <TaskCard
+            :task="task"
+            @delete-task="deleteTask"
+            @edit-task="editTask"
+          />
+        </div>
+      </span>
+      <span v-else class="no-data">
+          Nenhuma tarefa {{ status.name.toLowerCase() }}
+      </span>
     </div>
   </div>
 </template>
@@ -49,7 +54,7 @@ export default {
   },
   data() {
     return {
-      draggedTask: null, // Armazena a tarefa arrastada
+      draggedTask: null,
     };
   },
   methods: {
@@ -110,6 +115,10 @@ export default {
   background-color: #f9f9f9;
   transition: background-color 0.2s, border 0.2s;
 
+  * {
+    border-radius: 4px;
+  }
+
   &.drag-over {
     border: 2px dashed #409eff;
     background-color: #f0f9ff;
@@ -120,5 +129,20 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 10px;
+
+  .no-data {
+    background-color: #ebebeb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    color: #7c7c7c;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+  }
 }
 </style>
