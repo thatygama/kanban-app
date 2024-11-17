@@ -24,7 +24,7 @@
         </el-form-item>
         <el-form-item label="Status" style="text-align: left;">
           <el-dropdown @command="changeStatus">
-              <el-button size="mini" :type="getStatusType(task.status_id)">
+              <el-button class="btn-status" size="mini" :type="getStatusType(task.status_id)">
                 {{ task.status?.name || '' }}
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </el-button>
@@ -40,8 +40,9 @@
             </el-dropdown>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitTask">{{ isEdit ? 'Salvar' : 'Criar' }}</el-button>
+          <div class="mt-4" />
           <el-button type="danger" @click="returnTasks">Cancelar</el-button>
+          <el-button type="primary" @click="submitTask">{{ isEdit ? 'Salvar' : 'Criar' }}</el-button>
         </el-form-item>
       </el-form>
       <el-alert v-if="error" type="error" :closable="false">{{ error }}</el-alert>
@@ -152,6 +153,10 @@ export default {
     font-size: 24px;
     margin-bottom: 20px;
   }
+}
+
+.btn-status {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 30px -18px inset;
 }
 
 .el-form-item {

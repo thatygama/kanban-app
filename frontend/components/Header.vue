@@ -3,7 +3,7 @@
     <div class="header-content">
       <h2>Kanban!</h2>
       <h4 class="welcome-user">Bem-vindo(a){{ (user || {}).name ? `, ${user.name}` : '' }}!</h4>
-      <el-button type="danger" :disabled="loading" :loading="loading" @click="logout">Sair</el-button>
+      <el-button size="mini" :disabled="loading" :loading="loading" @click="logout">Sair</el-button>
     </div>
   </el-header>
 </template>
@@ -41,7 +41,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #2d3e50;
+  background-color: rgb(6, 6, 6);
   color: white;
   padding: 10px 20px;
 
@@ -53,8 +53,9 @@ export default {
   width: 100%;
 
   .el-button {
-    background-color: #e74c3c;
-    color: white;
+    background-color: transparent;
+    color: #aeaeae;
+    border-color: #aeaeae;
   }
 
   h2 {

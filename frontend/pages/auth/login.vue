@@ -80,7 +80,7 @@ export default {
     margin-bottom: 40px;
 
     h4 {
-      margin-top: -12px;
+      margin-top: -20px;
       color: #2890f8;
     }
   }

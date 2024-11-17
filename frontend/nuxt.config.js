@@ -20,6 +20,10 @@ export default {
     port: 3000,
   },
 
+  render: {
+    resourceHints: false,
+  },
+
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 

@@ -10,13 +10,13 @@ const functions = {
   getStatusType(statusId, color = false) {
     switch (statusId) {
       case 1:
-        return color ? '#909399' : 'info';
+        return color ? 'gray' : 'info';
       case 2:
-        return color ?  '#E6A23C' : 'warning';
+        return color ?  '#E49B0F' : 'warning';
       case 3:
-        return color ?  '#67C23A' : 'success';
+        return color ?  'green' : 'success';
       default:
-        return color ?  '#409EFF' : 'default';
+        return color ?  '#17161e' : 'default';
     }
   },
 };

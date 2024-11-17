@@ -5,12 +5,12 @@
     :data-id="status.id"
     @drop="onDrop"
     @dragover.prevent="onDragOver"
-    @dragenter="onDragEnter"
-    @dragleave="onDragLeave"
   >
-    <h3 :style="{ backgroundColor: getStatusColor(status.id), color: '#fff', padding: '10px' }">
-      {{ status.name }}
-    </h3>
+    <el-badge :value="tasks.length" class="mt-2" :type="getStatusType(status.id)">
+      <h3 class="status-name" :style="{ backgroundColor: getStatusColor(status.id), color: '#fff' }">
+        {{ status.name === 'Finalizada' ? 'Finalizadas' : status.name }}
+      </h3>
+    </el-badge>
     <div class="task-list">
       <span v-if="tasks.length">
         <div
@@ -29,7 +29,7 @@
         </div>
       </span>
       <span v-else class="no-data">
-          Nenhuma tarefa {{ status.name.toLowerCase() }}
+        Nenhuma tarefa {{ status.name.toLowerCase() }}
       </span>
     </div>
   </div>
@@ -37,6 +37,7 @@
 
 <script>
 import TaskCard from '@/components/tasks/TaskCard.vue';
+import $functions from '@/utils/functions';
 
 export default {
   components: {
@@ -58,6 +59,9 @@ export default {
     };
   },
   methods: {
+    getStatusType(status_id) {
+      return $functions.getStatusType(status_id);
+    },
     onDragStart(event) {
       const element = event.target;
       const taskClass = Array.from(element.classList).find((cls) => cls.startsWith('task-'));
@@ -78,22 +82,16 @@ export default {
     onDragOver(event) {
       event.preventDefault();
     },
-    onDragEnter(event) {
-      event.currentTarget.classList.add('drag-over');
-    },
-    onDragLeave(event) {
-      event.currentTarget.classList.remove('drag-over');
-    },
     getStatusColor(statusId) {
       switch (statusId) {
         case 1:
-          return '#909399'; // Cinza
+          return 'gray'; // Cinza
         case 2:
-          return '#E6A23C'; // Amarelo
+          return '#E49B0F'; // Amarelo
         case 3:
-          return '#67C23A'; // Verde
+          return 'green'; // Verde
         default:
-          return '#409EFF'; // Azul padrão
+          return '#17161e'; // Preto padrão
       }
     },
     deleteTask(taskId) {
@@ -119,9 +117,21 @@ export default {
     border-radius: 4px;
   }
 
-  &.drag-over {
-    border: 2px dashed #409eff;
-    background-color: #f0f9ff;
+  .status-name {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 18px -18px inset;
+    margin: 0;
+    font-size: 1rem;
+    text-align: center;
+    padding: 5px 15px;
+    width: 150px;
+    border-radius: 50px;
+    border: 3px solid;
+  }
+
+  .bg-space {
+    height: 2px;
+    width: 100%;
+    margin: 10px 0;
   }
 }
 
@@ -131,17 +141,17 @@ export default {
   gap: 10px;
 
   .no-data {
-    background-color: #ebebeb;
+    margin-top: 50px;
+    background-color: rgba(239, 239, 239, .7);
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 100px;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(221, 221, 221, .7);
     border-radius: 5px;
     color: #7c7c7c;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: .8rem;
     text-align: center;
   }
 }

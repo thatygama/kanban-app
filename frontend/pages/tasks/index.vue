@@ -1,8 +1,14 @@
 <template>
   <el-container class="tasks-container">
     <el-header>
-      <h1 class="bolder">Minhas Tarefas</h1>
-      <el-button type="primary" :disabled="loadingTasks" @click="createTask">+ Nova tarefa</el-button>
+      <h1 class="bolder">Lista de tarefas
+        <span class="ml-4">
+          <el-button type="primary" size="mini" :disabled="loadingTasks" @click="createTask">
+            <i class="el-icon-plus el-icon--right"></i>
+            Nova tarefa
+          </el-button>
+        </span>
+      </h1>
     </el-header>
     <el-main>
       <el-row :gutter="20">
