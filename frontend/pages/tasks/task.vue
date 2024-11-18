@@ -4,7 +4,7 @@
       <h1>{{ isEdit ? 'Editar Tarefa' : 'Criar Tarefa' }}</h1>
     </el-header>
     <el-main>
-      <el-form class="form-task" @submit.native.prevent="submitTask" :model="task" :rules="rules" label-width="120p">
+      <el-form class="form-task" @submit.native.prevent="submitTask" :model="task" :rules="rules" ref="formTask" label-width="120p">
         <el-form-item label="Título" prop="title">
           <el-input v-model="task.title" placeholder="Digite o título da tarefa" />
         </el-form-item>
@@ -114,7 +114,16 @@ export default {
     returnTasks() {
       this.$router.push('/tarefas');
     },
-    async submitTask() {
+    submitTask() {
+      this.$refs.formTask.validate(async (valid) => {
+        if (valid) {
+          await this.saveTask();
+        } else {
+          this.$message.error('Por favor, complete corretamente os campos antes de prosseguir.');
+        }
+      });
+    },
+    async saveTask() {
       const id = this.$route.params.id;
       try {
         const taskToSubmit = { ...this.task };
@@ -157,10 +166,6 @@ export default {
 
 .btn-status {
   box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 30px -18px inset;
-}
-
-.el-form-item {
-  margin-bottom: 20px;
 }
 
 .el-button {

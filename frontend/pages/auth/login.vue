@@ -5,17 +5,26 @@
       <h4>Suas tarefas organizadas</h4>
     </el-header>
     <el-main class="mt-5">
-      <el-form @submit.native.prevent="login" :model="form" label-width="60px">
-        <el-form-item label="Email">
+      <el-form
+        @submit.native.prevent="submitForm"
+        :model="form"
+        :rules="rules"
+        ref="loginForm"
+        label-width="60px">
+
+        <el-form-item label="Email" prop="email">
           <el-input v-model="form.email" type="email" placeholder="Digite seu email" />
         </el-form-item>
-        <el-form-item label="Senha">
+
+        <el-form-item label="Senha" prop="password">
           <el-input v-model="form.password" type="password" placeholder="Digite sua senha" show-password />
         </el-form-item>
+
         <el-form-item>
-          <el-button type="primary" :loading="logging" :disabled="logging" @click="login">Entrar</el-button>
+          <el-button class="mt-4" type="primary" :loading="logging" :disabled="logging" @click="submitForm">Entrar</el-button>
         </el-form-item>
       </el-form>
+
       <el-alert v-if="error" type="error" :closable="false">{{ error }}</el-alert>
       <p class="register-link">
         Ainda não possui uma conta? <el-button type="text" :disabled="logging" @click="goToRegister">Registre-se aqui</el-button>
@@ -32,11 +41,29 @@ export default {
         email: '',
         password: '',
       },
+      rules: {
+        email: [
+          { required: true, message: 'O email é obrigatório.', trigger: 'blur' },
+          { type: 'email', message: 'Insira um email válido.', trigger: 'blur' },
+        ],
+        password: [
+          { required: true, message: 'A senha é obrigatória.', trigger: 'blur' },
+        ],
+      },
       error: null,
-      logging: false
+      logging: false,
     };
   },
   methods: {
+    submitForm() {
+      this.$refs.loginForm.validate(async (valid) => {
+        if (valid) {
+          await this.login();
+        } else {
+          this.$message.error('Por favor, complete corretamente os campos antes de prosseguir.');
+        }
+      });
+    },
     async login() {
       this.logging = true;
       this.error = null;
@@ -84,10 +111,6 @@ export default {
       color: #2890f8;
     }
   }
-}
-
-.el-form-item {
-  margin-bottom: 15px;
 }
 
 .el-button {

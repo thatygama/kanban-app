@@ -4,23 +4,34 @@
       <h1>Registre-se no Kanban!</h1>
     </el-header>
     <el-main>
-      <el-form @submit.native.prevent="register" :model="form" label-width="130px">
-        <el-form-item label="Nome">
+      <el-form
+        @submit.native.prevent="register"
+        :model="form"
+        :rules="rules"
+        ref="registerForm"
+        label-width="150px">
+
+        <el-form-item label="Nome" prop="name">
           <el-input v-model="form.name" placeholder="Digite seu nome" />
         </el-form-item>
-        <el-form-item label="Email">
+
+        <el-form-item label="Email" prop="email">
           <el-input v-model="form.email" type="email" placeholder="Digite seu email" />
         </el-form-item>
-        <el-form-item label="Senha">
+
+        <el-form-item label="Senha" prop="password">
           <el-input v-model="form.password" type="password" placeholder="Digite sua senha" />
         </el-form-item>
-        <el-form-item label="Confirme a Senha">
+
+        <el-form-item label="Confirme a Senha" prop="password_confirmation">
           <el-input v-model="form.password_confirmation" type="password" placeholder="Confirme sua senha" />
         </el-form-item>
+
         <el-form-item>
-          <el-button type="primary" @click="register">Registrar</el-button>
+          <el-button class="mt-4" type="primary" @click="submitForm">Registrar</el-button>
         </el-form-item>
       </el-form>
+
       <el-alert v-if="error" type="error" :closable="false">{{ error }}</el-alert>
       <p class="login-link">
         Já possui uma conta? <el-button type="text" @click="goToLogin">Faça login aqui</el-button>
@@ -41,10 +52,42 @@ export default {
         password: '',
         password_confirmation: '',
       },
+      rules: {
+        name: [
+          { required: true, message: 'O nome é obrigatório.', trigger: 'blur' },
+        ],
+        email: [
+          { required: true, message: 'O email é obrigatório.', trigger: 'blur' },
+          { type: 'email', message: 'Insira um email válido.', trigger: 'blur' },
+        ],
+        password: [
+          { required: true, message: 'A senha é obrigatória.', trigger: 'blur' },
+          { min: 6, message: 'A senha deve ter pelo menos 6 caracteres.', trigger: 'blur' },
+        ],
+        password_confirmation: [
+          { required: true, message: 'Confirme sua senha.', trigger: 'blur' },
+          { validator: (rule, value, callback) => {
+            if (value !== this.form.password) {
+              callback(new Error('As senhas não coincidem.'));
+            } else {
+              callback();
+            }
+          }, trigger: 'blur' },
+        ],
+      },
       error: null,
     };
   },
   methods: {
+    submitForm() {
+      this.$refs.registerForm.validate(async (valid) => {
+        if (valid) {
+          await this.register();
+        } else {
+          this.$message.error('Por favor, complete corretamente os campos antes de prosseguir.');
+        }
+      });
+    },
     async register() {
       try {
         const response = await requestApi('register', 'POST', false, this.form);
@@ -81,10 +124,6 @@ export default {
     font-size: 24px;
     margin-bottom: 20px;
   }
-}
-
-.el-form-item {
-  margin-bottom: 15px;
 }
 
 .el-button {
