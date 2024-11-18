@@ -45,13 +45,18 @@ cp .env.example .env
 
 Certifique-se de configurar corretamente as variáveis de ambiente, especialmente as de conexão com o banco de dados.
 
-#### 2.3. Builde o projeto no Docker
+#### 2.3 Garanta que o seu MySQL local não esteja rodando antes de subir o Docker
+```
+service mysql stop
+````
+
+#### 2.4. Builde o projeto no Docker
 
 ```
 docker-compose up --build
 ```
 
-#### 2.4. Acessar o container para rodar o seed de Status
+#### 2.5. Acessar o container para rodar o seed de Status
 
 ```
 docker exec -it laravel-app sh
