@@ -12,6 +12,7 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV:-development}
     volumes:
+      - .:/app # ONLY development
       - /app/node_modules
     command: >
       sh -c "if [ \"$NODE_ENV\" = \"development\" ]; then npm run dev; else npm run start; fi"

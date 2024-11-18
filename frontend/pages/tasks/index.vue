@@ -1,7 +1,7 @@
 <template>
   <el-container class="tasks-container">
     <el-header>
-      <h1 class="bolder">Lista de tarefas
+      <h1 class="bolder">Controle suas tarefas
         <span class="ml-4">
           <el-button type="primary" size="mini" :disabled="loadingTasks" @click="createTask">
             <i class="el-icon-plus el-icon--right"></i>

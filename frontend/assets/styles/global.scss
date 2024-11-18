@@ -4,10 +4,27 @@
   scroll-behavior: smooth;
 }
 
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 body {
   scroll-behavior: smooth;
   font-family: 'Roboto', sans-serif;
-  font-size: 1rem;
+  font-size: .7rem;
   line-height: 1.6;
   margin: 0;
   padding: 0;
@@ -21,7 +38,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 p {
-  font-size: .8rem;
+  font-size: .7rem;
 }
 
 button, input, textarea {

@@ -1,5 +1,5 @@
 <template>
-  <div class="task-card" :data-task-id="task.id">
+  <div class="task-card" :data-task-id="task.id" :style="{ backgroundColor: getStatusType(task.status_id) }">
     <h3 class="bolder">{{ task.title }}</h3>
     <div class="descript">
       <p>{{ task.description || '-' }}</p>
@@ -12,7 +12,7 @@
     <div class="card-actions">
       <el-button type="danger" size="mini" @click="showDeleteDialog = true">
         <i class="el-icon-delete el-icon--right"></i>
-        Excluir
+        <strong>Excluir</strong>
       </el-button>
       <el-button type="primary" size="mini" @click="$emit('edit-task', task.id)">
         <i class="el-icon-edit el-icon--right"></i>
@@ -32,6 +32,7 @@
 
 <script>
 import ConfirmDialog from '@/components/dialogs/Confirm.vue';
+import $functions from '@/utils/functions';
 
 export default {
   props: {
@@ -47,6 +48,9 @@ export default {
     };
   },
   methods: {
+    getStatusType(status_id) {
+      return $functions.getStatusType(status_id, true, .11);
+    },
     openDeleteDialog() {
       this.showDeleteDialog = true;
     },
@@ -64,8 +68,6 @@ export default {
 <style lang="scss" scoped>
 .task-card {
   margin-top: 10px;
-  background-color: #fff;
-  border: 1px solid #ddd;
   border-radius: 5px;
   padding: 0 10px 20px 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -76,12 +78,14 @@ export default {
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 
   .descript {
     border-radius: 4px;
     border: 1px solid #e8e8e8cc;
-    background-color: #e8e8e8cc;box-shadow: rgba(50, 50, 93, 0.1) 0px 7px 7px -12px inset, rgba(0, 0, 0, 0.1) 0px 8px 6px -8px inset;
+    background-color: #ffffffcc;
     padding: 0 10px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px inset, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px inset;
   }
 
   p {

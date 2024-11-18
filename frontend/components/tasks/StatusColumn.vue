@@ -7,7 +7,7 @@
     @dragover.prevent="onDragOver"
   >
     <el-badge :value="tasks.length" class="mt-2" :type="getStatusType(status.id)">
-      <h3 class="status-name" :style="{ backgroundColor: getStatusColor(status.id), color: '#fff' }">
+      <h3 class="status-name" :style="{ backgroundColor: getStatusType(status.id, true), color: '#fff' }">
         {{ status.name === 'Finalizada' ? 'Finalizadas' : status.name }}
       </h3>
     </el-badge>
@@ -59,8 +59,8 @@ export default {
     };
   },
   methods: {
-    getStatusType(status_id) {
-      return $functions.getStatusType(status_id);
+    getStatusType(status_id, color = false) {
+      return $functions.getStatusType(status_id, color);
     },
     onDragStart(event) {
       const element = event.target;
@@ -82,18 +82,6 @@ export default {
     onDragOver(event) {
       event.preventDefault();
     },
-    getStatusColor(statusId) {
-      switch (statusId) {
-        case 1:
-          return 'gray'; // Cinza
-        case 2:
-          return '#E49B0F'; // Amarelo
-        case 3:
-          return 'green'; // Verde
-        default:
-          return '#17161e'; // Preto padrão
-      }
-    },
     deleteTask(taskId) {
       this.$emit('delete-task', taskId);
     },
@@ -108,10 +96,12 @@ export default {
 .status-column {
   border: 1px solid #ddd;
   border-radius: 5px;
-  padding: 10px;
+  padding: 20px;
   min-height: 300px;
   background-color: #f9f9f9;
   transition: background-color 0.2s, border 0.2s;
+  box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+  margin-bottom: 30px;
 
   * {
     border-radius: 4px;
@@ -120,7 +110,7 @@ export default {
   .status-name {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 18px -18px inset;
     margin: 0;
-    font-size: 1rem;
+    font-size: .9rem;
     text-align: center;
     padding: 5px 15px;
     width: 150px;
@@ -151,7 +141,7 @@ export default {
     border: 1px solid rgba(221, 221, 221, .7);
     border-radius: 5px;
     color: #7c7c7c;
-    font-size: .8rem;
+    font-size: .9rem;
     text-align: center;
   }
 }
