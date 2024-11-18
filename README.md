@@ -2,13 +2,16 @@
 
 Este é um projeto **Kanban App** desenvolvido com **Laravel** no backend e **Vue com Nuxt.js** no frontend. A aplicação foi configurada para rodar com **Docker**.
 
+![Kanban](https://github.com/user-attachments/assets/033d8853-4044-4db9-8df8-10c4baa92825)
+
+
 ## Pré-requisitos
 
 Certifique-se de ter os seguintes softwares instalados no seu computador:
 
-- [Docker](https://www.docker.com/)
-- [Docker Compose](https://docs.docker.com/compose/install/)
-
+- Git
+- Docker
+- Editor de código (VS Code)
 
 ## Como rodar o projeto
 
