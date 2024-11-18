@@ -1,6 +1,12 @@
 # Kanban App
 
 Este é um projeto **Kanban App** desenvolvido com **Laravel** no backend e **Vue com Nuxt.js** no frontend. A aplicação foi configurada para rodar com **Docker**.
+Neste projeto realizado em 2 dias, o foco foi demonstrar boas práticas de desenvolvimento para as seguintes funcionalidades:
+##### No frontend: 
+Componentização; Manipulação de elementos no DOM com funções "draggable"; Integração com API; Boas práticas de UX/UI; Validações de formulários; Utilização de SCSS; Estilização global; Uso da biblioteca Element-UI e mudanças em estilizações padrões; Primeira experiência pessoal na utilização de Nuxt em um projeto.
+##### No backend:
+Utilização de Laravel; Autenticação de usuário com JWT; Migrations, Seeds, Models, Controllers, Middlewares; Automatização da geração de chaves com Docker.
+
 
 ![Kanban](https://github.com/user-attachments/assets/033d8853-4044-4db9-8df8-10c4baa92825)
 
