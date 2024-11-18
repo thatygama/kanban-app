@@ -28,7 +28,7 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button class="mt-4" type="primary" @click="submitForm">Registrar</el-button>
+          <el-button class="mt-4" type="primary" :loading="loading" @click="submitForm">Registrar</el-button>
         </el-form-item>
       </el-form>
 
@@ -46,6 +46,7 @@ import requestApi from '@/helpers/request-helper';
 export default {
   data() {
     return {
+      loading: false,
       form: {
         name: '',
         email: '',
@@ -92,6 +93,7 @@ export default {
     },
     async register() {
       try {
+        this.loading = true;
         const response = await requestApi('register', 'POST', false, this.form);
 
         if (response.status) {
@@ -102,6 +104,8 @@ export default {
         }
       } catch (err) {
         this.error = 'Erro ao tentar registrar. Tente novamente.';
+      } finally {
+        this.loading = false;
       }
     },
     goToLogin() {
