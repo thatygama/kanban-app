@@ -1,7 +1,7 @@
 <template>
   <el-container v-loading="loadingTask" class="task-form-container">
     <el-header>
-      <h1>{{ isEdit ? 'Editar Tarefa' : 'Criar Tarefa' }}</h1>
+      <h1>{{ isEdit ? 'Editar tarefa' : 'Criar tarefa' }}</h1>
     </el-header>
     <el-main>
       <el-form class="form-task" @submit.native.prevent="submitTask" :model="task" :rules="rules" ref="formTask" label-width="120p">
@@ -75,6 +75,7 @@ export default {
       rules: {
         title: [
           { required: true, message: 'O título é obrigatório.', trigger: 'blur' },
+          { max: 150, message: 'O título deve ter no máximo 150 caracteres.', trigger: 'blur' },
         ],
       },
     };

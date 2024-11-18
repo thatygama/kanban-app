@@ -104,10 +104,10 @@ export default {
   .el-header {
     display: flex;
     flex-direction: column;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 
     h4 {
-      margin-top: -20px;
+      margin-top: -15px;
       color: #2890f8;
     }
   }

@@ -69,15 +69,8 @@ export default {
 .task-card {
   margin-top: 10px;
   border-radius: 5px;
-  padding: 0 10px 20px 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 1px 10px 20px 10px;
   cursor: grab;
-  word-wrap: break-word;
-  word-break: break-word;
-  overflow-wrap: break-word;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 
   .descript {
@@ -86,6 +79,11 @@ export default {
     background-color: #ffffffcc;
     padding: 0 10px;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px inset, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px inset;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
   }
 
   p {

@@ -55,6 +55,7 @@ export default {
       rules: {
         name: [
           { required: true, message: 'O nome é obrigatório.', trigger: 'blur' },
+          { max: 100, message: 'O nome deve ter no máximo 100 caracteres.', trigger: 'blur' },
         ],
         email: [
           { required: true, message: 'O email é obrigatório.', trigger: 'blur' },
@@ -63,6 +64,7 @@ export default {
         password: [
           { required: true, message: 'A senha é obrigatória.', trigger: 'blur' },
           { min: 6, message: 'A senha deve ter pelo menos 6 caracteres.', trigger: 'blur' },
+          { max: 10, message: 'A senha deve ter no máximo 10 caracteres.', trigger: 'blur' },
         ],
         password_confirmation: [
           { required: true, message: 'Confirme sua senha.', trigger: 'blur' },
